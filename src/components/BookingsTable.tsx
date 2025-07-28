@@ -2,78 +2,53 @@
 
 import { useEffect, useState } from 'react';
 import api from '@/lib/api';
-
-type RelationshipData = {
-  id: string;
-  type: string;
-};
-
-type IncludedItem = {
-  id: string;
-  type: string;
-  attributes: {
-    key: string;
-  };
-};
-
-type Booking = {
-  id: string;
-  type: string;
-  attributes: {
-    date: string;
-    status: string;
-    car?: {
-      make: string;
-      model: string;
-    };
-    service?: {
-      name: string;
-    };
-  };
-  relationships?: {
-    car?: {
-      data: RelationshipData | null;
-    };
-    service?: {
-      data: RelationshipData | null;
-    };
-  };
-};
+import {
+  IncludedItem,
+  RawBooking,
+  EnrichedBooking,
+  CarAttributes,
+  ServiceAttributes
+} from '@/types';
 
 export default function BookingsTable() {
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<EnrichedBooking[]>([]);
 
   useEffect(() => {
     async function fetchBookings() {
       try {
         const response = await api.get('/bookings');
-        const data: Booking[] = response.data.data;
-        const included: IncludedItem[] = response.data.included || [];
+        const rawBookings: RawBooking[] = response.data.data;
+        const included: IncludedItem[] = response.data.included;
 
-        const includedMap = included.reduce((acc, item) => {
+        // Map type-id to attributes
+        const includedMap = included.reduce<Record<string, IncludedItem>>((acc, item) => {
           acc[`${item.type}-${item.id}`] = item;
           return acc;
-        }, {} as Record<string, IncludedItem>);
+        }, {});
 
-        const bookingsWithRelations = data.map((booking) => {
-          const carRef = booking.relationships?.car?.data;
-          const serviceRef = booking.relationships?.service?.data;
+        const enriched: EnrichedBooking[] = rawBookings.map((booking) => {
+          const carRef = booking.relationships.car?.data;
+          const serviceRef = booking.relationships.service?.data;
+
+          const car = carRef
+            ? (includedMap[`car-${carRef.id}`]?.attributes as CarAttributes)
+            : undefined;
+
+          const service = serviceRef
+            ? (includedMap[`service-${serviceRef.id}`]?.attributes as ServiceAttributes)
+            : undefined;
 
           return {
-            ...booking,
+            id: booking.id,
             attributes: {
               ...booking.attributes,
-              car: carRef
-                ? includedMap[`${carRef.type}-${carRef.id}`]?.attributes || null
-                : null,
-              service: serviceRef
-                ? includedMap[`${serviceRef.type}-${serviceRef.id}`]?.attributes || null
-                : null,
+              car,
+              service,
             },
           };
         });
 
-        setBookings(bookingsWithRelations);
+        setBookings(enriched);
       } catch (error) {
         console.error('Error fetching bookings:', error);
       }
@@ -86,8 +61,9 @@ export default function BookingsTable() {
 
   return (
     <div className="p-4 bg-white rounded-2xl shadow-md mt-6">
-      <h2 className="text-lg font-semibold mb-4 text-blue-700">Current Bookings</h2>
-
+      <div className="text-sm">
+        <h2 className="text-lg font-semibold mb-4 text-blue-700">Current Bookings</h2>
+      </div>
       <div className="overflow-x-auto rounded-md border border-gray-200">
         <table className="min-w-full text-sm text-gray-800">
           <thead className="bg-gray-100 text-left">
@@ -103,10 +79,13 @@ export default function BookingsTable() {
             {bookings.map((b) => (
               <tr key={b.id} className="border-t hover:bg-gray-50 transition">
                 <td className="px-4 py-2">
-                  {b.attributes.car?.make || '—'}{' '}
-                  {b.attributes.car?.model && ` ${b.attributes.car.model}`}
+                  {b.attributes.car
+                    ? `${b.attributes.car.make} ${b.attributes.car.model}`
+                    : '—'}
                 </td>
-                <td className="px-4 py-2">{b.attributes.service?.name || '—'}</td>
+                <td className="px-4 py-2">
+                  {b.attributes.service?.name || '—'}
+                </td>
                 <td className="px-4 py-2">
                   {new Date(b.attributes.date).toLocaleDateString()}
                 </td>

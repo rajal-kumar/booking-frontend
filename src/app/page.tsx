@@ -63,9 +63,9 @@ export default function HomePage() {
 
         {/* Future animation / illustration area */}
         <div className="mt-8 border-t pt-4">
-          <p className="text-gray-400 italic text-sm">
+          <div className="text-gray-400 italic text-sm">
             <BookingsTable />
-          </p>
+          </div>
         </div>
       </div>
     </main>
