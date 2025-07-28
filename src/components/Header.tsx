@@ -19,11 +19,6 @@ export default function Header() {
           Services
         </Link>
       </nav>
-      <div className="mt-6 text-right">
-        <Link href="/login" className="text-white-600 hover:underline font-medium">
-          Login
-        </Link>
-      </div>
     </header>
   );
 }
