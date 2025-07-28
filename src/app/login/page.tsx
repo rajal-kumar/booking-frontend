@@ -17,7 +17,10 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      router.push('/'); // redirect to landing
+      // Normally you'd call your auth API here
+      // const response = await api.post('/login', { user: { email, password } });
+
+      router.push('/'); // Redirect to homepage
     } catch (err) {
       console.error('Login failed:', err);
       setError('Invalid email or password.');
@@ -27,36 +30,47 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 text-black">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-4">Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white dark:bg-gray-800 text-black dark:text-white p-8 rounded-xl shadow-xl w-full max-w-sm transition-all"
+      >
+        <h1 className="text-3xl font-semibold mb-6 text-center">Login</h1>
 
-        {error && <p className="text-red-500 mb-2">{error}</p>}
+        {error && (
+          <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+        )}
 
+        <label htmlFor="email" className="block text-sm font-medium mb-1">
+          Email
+        </label>
         <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full mb-3 p-2 border rounded"
-        required
-        suppressHydrationWarning={true}
-      />
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full mb-4 p-2.5 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-
+        <label htmlFor="password" className="block text-sm font-medium mb-1">
+          Password
+        </label>
         <input
+          id="password"
           type="password"
-          placeholder="Password"
+          placeholder="••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-4 p-2 border rounded"
           required
+          className="w-full mb-6 p-2.5 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <button
           type="submit"
-          className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full ${loading ? 'opacity-50' : ''}`}
           disabled={loading}
+          className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded transition disabled:opacity-50`}
         >
           {loading ? 'Logging in...' : 'Login'}
         </button>

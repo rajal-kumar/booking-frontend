@@ -1,10 +1,10 @@
- 'use client'
+'use client';
 
- import React, { useEffect, useState } from 'react';
- import { useRouter } from 'next/navigation';
- import api from '@/lib/api';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import api from '@/lib/api';
 
- interface CarApiResponse {
+interface CarApiResponse {
   id: number;
   attributes: {
     make: string;
@@ -51,7 +51,7 @@ export default function NewBookingForm() {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({...form, [e.target.name]: e.target.value});
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,11 +77,11 @@ export default function NewBookingForm() {
         },
       });
       setSuccess(true);
-      setForm({ carId: '', serviceId: '', date: '', status: 'pending'});
+      setForm({ carId: '', serviceId: '', date: '', status: 'pending' });
 
       setTimeout(() => {
         router.push('/bookings');
-      }, 1200)
+      }, 1300);
     } catch (err) {
       console.error('Booking creation failed:', err);
       setErrors('Could not create booking.');
@@ -91,15 +91,27 @@ export default function NewBookingForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 bg-white rounded shadow max-w-md mx-auto mt-6 text-black">
-      <h2 className="text-xl font-bold mb-4">Create a New Booking</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="animate-slide-in-up p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-xl shadow-md max-w-md w-full mx-auto mt-8 space-y-4 transition-all"
+    >
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+        Create a New Booking
+      </h2>
 
-      {errors && <p className="text-red-500 mb-2">{errors}</p>}
-      {success && <p className="text-green-500 mb-2">Booking created successfully!</p>}
+      {errors && <p className="text-red-500 text-sm">{errors}</p>}
+      {success && <p className="text-green-500 text-sm">Booking created successfully!</p>}
 
-      <label className="block mb-2">
-        Car:
-        <select name="carId" value={form.carId} onChange={handleChange} className="w-full mt-1 p-2 border rounded">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Car
+        </label>
+        <select
+          name="carId"
+          value={form.carId}
+          onChange={handleChange}
+          className="w-full p-2.5 rounded border dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+        >
           <option value="">Select a car</option>
           {cars.map((car) => (
             <option key={car.id} value={car.id}>
@@ -107,11 +119,18 @@ export default function NewBookingForm() {
             </option>
           ))}
         </select>
-      </label>
+      </div>
 
-      <label className="block mb-2">
-        Service:
-        <select name="serviceId" value={form.serviceId} onChange={handleChange} className="w-full mt-1 p-2 border rounded">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Service
+        </label>
+        <select
+          name="serviceId"
+          value={form.serviceId}
+          onChange={handleChange}
+          className="w-full p-2.5 rounded border dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+        >
           <option value="">Select a service</option>
           {services.map((service) => (
             <option key={service.id} value={service.id}>
@@ -119,35 +138,46 @@ export default function NewBookingForm() {
             </option>
           ))}
         </select>
-      </label>
+      </div>
 
-      <label className="block mb-2">
-        Date:
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Date
+        </label>
         <input
           type="date"
           name="date"
           value={form.date}
           onChange={handleChange}
-          className="w-full mt-1 p-2 border rounded"
+          className="w-full p-2.5 rounded border dark:border-gray-600 dark:bg-gray-700 dark:text-white"
         />
-      </label>
+      </div>
 
-      <label className="block mb-4">
-        Status:
-        <select name="status" value={form.status} onChange={handleChange} className="w-full mt-1 p-2 border rounded">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Status
+        </label>
+        <select
+          name="status"
+          value={form.status}
+          onChange={handleChange}
+          className="w-full p-2.5 rounded border dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+        >
           <option value="pending">Pending</option>
           <option value="confirmed">Confirmed</option>
           <option value="cancelled">Cancelled</option>
         </select>
-      </label>
+      </div>
 
       <button
         type="submit"
-        className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
         disabled={submitting}
+        className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded transition-all ${
+          submitting ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
       >
         {submitting ? 'Creating...' : 'Create Booking'}
       </button>
     </form>
   );
- }
+}

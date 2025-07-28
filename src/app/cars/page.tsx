@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from "react";
-import api from "@/lib/api";
-import CardCard from "@/components/CarCard";
+import { useEffect, useState } from 'react';
+import api from '@/lib/api';
+import CardCard from '@/components/CarCard';
 
 interface CarApiResponse {
   id: number;
@@ -27,36 +27,45 @@ export default function CarsPage() {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await api.get("/cars");
+        const response = await api.get('/cars');
         const transformedCars = response.data.data.map((car: CarApiResponse): Car => ({
           id: car.id,
           ...car.attributes,
         }));
-
         setCars(transformedCars);
       } catch (err) {
-        console.error("Failed to fetch cars:", err);
+        console.error('Failed to fetch cars:', err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchCars();
-  }, [])
+  }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold text-blue-600">Cars</h1>
-      <br />
-      {loading ? (
-        <p className="text-gray-700">Loading...</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {cars.map((car, i) => (
-            <CardCard key={i} car={car} />
-          ))}
-        </div>
-      )}
-    </div>
+    <main className="px-4 sm:px-6 lg:px-8 py-8 min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-extrabold text-blue-600 dark:text-blue-400 mb-6">
+          Cars
+        </h1>
+
+        {loading ? (
+          <div className="text-center text-gray-500 dark:text-gray-400 animate-pulse">
+            Loading cars...
+          </div>
+        ) : cars.length === 0 ? (
+          <div className="text-center text-gray-500 dark:text-gray-400">
+            No cars found.
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {cars.map((car, i) => (
+              <CardCard key={i} car={car} />
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
