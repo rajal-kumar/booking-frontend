@@ -12,7 +12,7 @@ type IncludedItem = {
   id: string;
   type: string;
   attributes: {
-    [key: string]: any;
+    key: string;
   };
 };
 
