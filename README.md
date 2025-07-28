@@ -40,6 +40,10 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## 🧪 Testing
+
+Testing is in progress. Frontend specs will be added using Jest + React Testing Library.
+
 ## Why Next.js for this demo?
 
 - Familiarity: Faster ramp-up, allowing me to focus on delivering UI polish and interactivity
