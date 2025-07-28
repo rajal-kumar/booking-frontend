@@ -16,21 +16,24 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Why Next.js for this demo?
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Familiarity: Faster ramp-up, allowing me to focus on delivering UI polish and interactivity
+- Modular Architecture: Easy to organize into reusable components and isolated routes
+- Tailwind CSS: Fast prototyping and clean styling with built-in responsiveness
+- Built-in Routing: No need for extra router packages
+- Server Components + App Router: Helps separate logic and presentation cleanly
+- Seamless Deployment: Deploys to Vercel in seconds with CI/CD
 
-## Learn More
+## Angular vs Next.js (from my perspective)
 
-To learn more about Next.js, take a look at the following resources:
+| Feature                        | Angular                            | Next.js                           |
+|-------------------------------|------------------------------------|------------------------------------|
+| Learning Curve                | Steeper (especially for new devs)  | Easier to ramp up                 |
+| Modularity                    | Very structured                    | Flexible but clean                 |
+| Styling                       | Uses Angular-specific stylesheets | Tailwind or any CSS works great    |
+| Routing                       | Explicit via config                | File-based routing (faster dev)   |
+| Performance Tuning            | Built-in tools                     | Better default DX (with Vercel)   |
+| Ecosystem                     | Enterprise-level                   | Startup and enterprise friendly   |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> In this case, Next.js allowed me to focus on polish and speed of delivery without battling a new framework.
