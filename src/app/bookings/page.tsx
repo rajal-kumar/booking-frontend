@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import api from "@/lib/api";
-import BookingCard from "@/components/BookingCard";
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import api from '@/lib/api';
+import BookingCard from '@/components/BookingCard';
 
 interface Booking {
   id: number;
@@ -62,7 +63,15 @@ export default function BookingsPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-blue-600">Bookings</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold text-blue-600">Bookings</h1>
+        <Link href="/bookings/new">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            + New Booking
+          </button>
+        </Link>
+      </div>
+
       {loading ? (
         <p className="text-gray-700">Loading...</p>
       ) : (
