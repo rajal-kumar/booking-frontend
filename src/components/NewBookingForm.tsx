@@ -73,6 +73,7 @@ export default function NewBookingForm() {
           service_id: form.serviceId,
           date: form.date,
           status: form.status || 'pending',
+          user_id: 14
         },
       });
       setSuccess(true);
