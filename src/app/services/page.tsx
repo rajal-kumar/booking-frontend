@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import ServiceCard from "@/components/ServiceCard";
 
+interface ServiceApiResponse {
+  id: number;
+  attributes: {
+    name: string;
+  }
+}
 interface Service {
   id: number;
   name: string;
@@ -17,7 +23,12 @@ export default function ServicesPage() {
     const fetchServices = async () => {
       try {
         const response = await api.get("/services");
-        setService(response.data.data.map((item: any) => item.attributes));
+        const transformedService = response.data.data.map((service: ServiceApiResponse): Service => ({
+          id: service.id,
+          ...service.attributes,
+        }));
+
+        setService(transformedService);
       } catch (err) {
         console.error("Error fetching services:", err);
       } finally {
