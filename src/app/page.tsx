@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import BookingsTable from '@/components/BookingsTable'
 
 type User = {
   name: string
@@ -62,9 +63,9 @@ export default function HomePage() {
 
         {/* Future animation / illustration area */}
         <div className="mt-8 border-t pt-4">
-          <p className="text-gray-400 italic text-sm">
-            (Placeholder for animation / hero image)
-          </p>
+          <div className="text-gray-400 italic text-sm">
+            <BookingsTable />
+          </div>
         </div>
       </div>
     </main>
