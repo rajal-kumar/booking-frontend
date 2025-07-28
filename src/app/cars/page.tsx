@@ -4,6 +4,15 @@ import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import CardCard from "@/components/CarCard";
 
+interface CarApiResponse {
+  id: number;
+  attributes: {
+    make: string;
+    model: string;
+    rego: string;
+  };
+}
+
 interface Car {
   id: number;
   make: string;
@@ -19,7 +28,12 @@ export default function CarsPage() {
     const fetchCars = async () => {
       try {
         const response = await api.get("/cars");
-        setCars(response.data.data.map((item: any) => item.attributes));
+        const transformedCars = response.data.data.map((car: CarApiResponse): Car => ({
+          id: car.id,
+          ...car.attributes,
+        }));
+
+        setCars(transformedCars);
       } catch (err) {
         console.error("Failed to fetch cars:", err);
       } finally {
