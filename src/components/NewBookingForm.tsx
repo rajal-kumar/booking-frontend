@@ -4,11 +4,26 @@
  import { useRouter } from 'next/navigation';
  import api from '@/lib/api';
 
- export default function NewBookingForm() {
+ interface CarApiResponse {
+  id: number;
+  attributes: {
+    make: string;
+    model: string;
+  };
+}
+
+interface ServiceApiResponse {
+  id: number;
+  attributes: {
+    name: string;
+  };
+}
+
+export default function NewBookingForm() {
   const router = useRouter();
 
-  const [cars, setCars] = useState([]);
-  const [services, setServices] = useState([]);
+  const [cars, setCars] = useState<CarApiResponse[]>([]);
+  const [services, setServices] = useState<ServiceApiResponse[]>([]);
   const [form, setForm] = useState({
     carId: '',
     serviceId: '',
@@ -16,19 +31,19 @@
     status: 'pending',
   });
   const [errors, setErrors] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const carsRes = await api.get('/cars')
-        const serviceRes = await api.get('/services')
+        const carsRes = await api.get('/cars');
+        const serviceRes = await api.get('/services');
 
         setCars(carsRes.data.data);
         setServices(serviceRes.data.data);
       } catch (err) {
-        console.error('Failed to load dropdown data', err)
+        console.error('Failed to load dropdown data', err);
         setErrors('Could not load car or service options.');
       }
     };
@@ -85,7 +100,7 @@
         Car:
         <select name="carId" value={form.carId} onChange={handleChange} className="w-full mt-1 p-2 border rounded">
           <option value="">Select a car</option>
-          {cars.map((car: any) => (
+          {cars.map((car) => (
             <option key={car.id} value={car.id}>
               {car.attributes.make} {car.attributes.model}
             </option>
@@ -97,7 +112,7 @@
         Service:
         <select name="serviceId" value={form.serviceId} onChange={handleChange} className="w-full mt-1 p-2 border rounded">
           <option value="">Select a service</option>
-          {services.map((service: any) => (
+          {services.map((service) => (
             <option key={service.id} value={service.id}>
               {service.attributes.name}
             </option>
