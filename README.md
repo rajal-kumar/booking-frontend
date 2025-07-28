@@ -1,17 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Booking Management Frontend (Next.js)
 
-## Getting Started
+A clean, responsive frontend for managing car bookings — built with Next.js (App Router), Tailwind CSS, and TypeScript. Designed with modularity, scalability, and enterprise readability in mind.
 
-First, run the development server:
+## 🚀 Live Demo
+
+- Frontend: <https://booking-frontend-me59ib22v-rajal-kumars-projects.vercel.app/>
+
+## 🛠 Tech Stack
+
+- Next.js (App Router)
+- Tailwind CSS
+- TypeScript
+- Vercel (Hosting)
+
+## ⚙️ Features
+
+- Card & table views for bookings
+- Component-based architecture (BookingCard, CarCard, ServiceCard)
+- Mobile-friendly and responsive design
+- New booking form with validation, toast notifications, and animations
+- Light/Dark mode support
+- API integration with a Rails backend
+
+## 🔗 API Endpoints Used
+
+- `GET /api/v1/cars`
+- `GET /api/v1/services`
+- `GET /api/v1/bookings`
+- `POST /api/v1/bookings`
+
+## 🧑‍💻 Getting Started
 
 ```bash
+git clone https://github.com/rajal-kumar/booking-frontend.git
+cd booking-frontend
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
