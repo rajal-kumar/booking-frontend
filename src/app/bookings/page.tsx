@@ -5,6 +5,36 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import BookingCard from '@/components/BookingCard';
 
+interface BookingApiResponse {
+  id: number;
+  attributes: {
+    date: string;
+    status: string;
+  };
+  relationships?: {
+    car?: {
+      data?: {
+        id: string;
+        type: string;
+      };
+    };
+    service?: {
+      data?: {
+        id: string;
+        type: string;
+      };
+    };
+  };
+}
+
+// Included resource shape (for car/service)
+interface IncludedResource {
+  id: string;
+  type: string;
+  attributes: Record<string, number>; // or you can type them more strictly if you want
+}
+
+// Final shape used in UI
 interface Booking {
   id: number;
   date: string;
@@ -27,25 +57,25 @@ export default function BookingsPage() {
       try {
         const response = await api.get("/bookings?include=car,service");
 
-        const included = response.data.included || [];
+        const included: IncludedResource[] = response.data.included || [];
 
-        const bookingsData = response.data.data.map((booking: any) => {
+        const bookingsData: Booking[] = response.data.data.map((booking: BookingApiResponse) => {
           const carRel = booking.relationships?.car?.data;
           const serviceRel = booking.relationships?.service?.data;
 
-          const car = included.find((i: any) => i.id === carRel?.id && i.type === carRel?.type);
-          const service = included.find((i: any) => i.id === serviceRel?.id && i.type === serviceRel?.type);
+          const car = included.find(i => i.id === carRel?.id && i.type === carRel?.type);
+          const service = included.find(i => i.id === serviceRel?.id && i.type === serviceRel?.type);
 
           return {
             id: booking.id,
             date: booking.attributes.date,
             status: booking.attributes.status,
             car: {
-              make: car?.attributes?.make || 'Unknown',
-              model: car?.attributes?.model || ''
+              make: car?.attributes?.make || "Unknown",
+              model: car?.attributes?.model || ""
             },
             service: {
-              name: service?.attributes?.name || 'Unknown'
+              name: service?.attributes?.name || "Unknown"
             }
           };
         });
